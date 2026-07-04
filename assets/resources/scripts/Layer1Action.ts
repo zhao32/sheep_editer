@@ -78,7 +78,7 @@ export class Layer1Action extends Component {
                     continue;
                 }
                 //根据包围盒子判断是否和另外的盒子有相交关系
-                if (ele_1.get_custom_bounding_box().intersects(ele_2.get_custom_bounding_box())) {
+                if (ele_1.get_bounding_box().intersects(ele_2.get_bounding_box())) {
                     ele_1.hide();
                     break;
                 }

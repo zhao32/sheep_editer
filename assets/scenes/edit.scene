@@ -491,7 +491,7 @@
     "node": {
       "__id__": 10
     },
-    "_enabled": false,
+    "_enabled": true,
     "__prefab": null,
     "_customMaterial": null,
     "_srcBlendFactor": 2,
@@ -530,7 +530,7 @@
     "node": {
       "__id__": 10
     },
-    "_enabled": false,
+    "_enabled": true,
     "__prefab": null,
     "pre_block": {
       "__uuid__": "f2137c32-d8ec-4ce4-b179-284e94cece40",
@@ -689,7 +689,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 125,
+      "y": 130,
       "z": 0
     },
     "_lrot": {
@@ -727,7 +727,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 618,
+      "width": 660,
       "height": 700
     },
     "_anchorPoint": {

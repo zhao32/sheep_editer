@@ -127,6 +127,8 @@ export class EditCtlAction extends Component {
         this.position_data.string = ret;
         //tips提示导出成功
         EventDispatcher.get_target().emit(EventDispatcher.TIPS_MSG, "export complete");
+
+        this.copyHandle(this.position_data.string)
     }
     /**
      * 清理全部
@@ -164,6 +166,21 @@ export class EditCtlAction extends Component {
      */
     set_pos(x: number, y: number) {
         this.label_position.string = x + "," + y;
+    }
+
+    onCopy_click() {
+        this.copyHandle(this.position_data.string)
+    }
+
+    copyHandle(content) {
+        let copy = (e) => {
+            e.preventDefault()
+            e.clipboardData.setData('text/plain', content)
+            alert('复制成功')
+            document.removeEventListener('copy', copy)
+        }
+        document.addEventListener('copy', copy)
+        document.execCommand("Copy");
     }
 }
 
