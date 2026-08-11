@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Label, Button, EditBox, EventTouch, Color, Vec3, Size } from 'cc';
+import { _decorator, Component, Node, Label, Button, EditBox, EventTouch, Color, Vec3, Size, color } from 'cc';
 import { EditAction } from './EditAction';
 import { EventDispatcher } from './EventDispatcher';
 import { GameState } from './GameState';
@@ -49,16 +49,16 @@ export class EditCtlAction extends Component {
     refush_model() {
         switch (GameState.edit_model) {
             case 1:
-                this.label_model_value.string = "add block model";
+                this.label_model_value.string = "add block";
                 break;
             case 2:
-                this.label_model_value.string = "del block model";
+                this.label_model_value.string = "del block";
                 break;
             case 3:
-                this.label_model_value.string = "add grid model";
+                this.label_model_value.string = "add grid";
                 break;
             case 4:
-                this.label_model_value.string = "del grid model";
+                this.label_model_value.string = "del grid";
                 break;
         }
 
@@ -142,7 +142,8 @@ export class EditCtlAction extends Component {
     click_custom_grid() {
         let x = this.position_x.string;
         let y = this.position_y.string;
-        this.node.parent.getChildByName("edit").getComponent(EditAction).add_grid(Number(x), Number(y), new Size(10, 10));
+        this.node.parent.getChildByName("edit").getComponent(EditAction).add_grid(Number(x), Number(y), new Size(15, 15), Color.RED);
+        this.node.parent.getChildByName("edit").getComponent(EditAction).addBlockByCustomPos(Number(x), Number(y))
     }
     /**
      * 更新label（block size）显示layer1中block的数量
@@ -176,7 +177,7 @@ export class EditCtlAction extends Component {
         let copy = (e) => {
             e.preventDefault()
             e.clipboardData.setData('text/plain', content)
-            alert('复制成功')
+            alert('数据导出并复制成功，请前往后台粘贴')
             document.removeEventListener('copy', copy)
         }
         document.addEventListener('copy', copy)

@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Prefab, UITransform, instantiate, Size, Input, EventTouch, Vec3, Vec2, Game, EventMouse } from 'cc';
+import { _decorator, Component, Node, Prefab, UITransform, instantiate, Size, Input, EventTouch, Vec3, Vec2, Game, EventMouse, Color, Sprite } from 'cc';
 import { EditCtlAction } from './EditCtlAction';
 import { EventDispatcher } from './EventDispatcher';
 import { GameState } from './GameState';
@@ -49,7 +49,7 @@ export class EditAction extends Component {
         let start_x = this.node.getComponent(UITransform).width / 2 * -1 + 15;
         let start_y = this.node.getComponent(UITransform).height / 2 - 10;
         for (let i = 0; i < 10; i++) {
-            let x = start_x + (57 * (i + 1));
+            let x = start_x + (57.5 * (i + 1));
             for (let j = 0; j < 11; j++) {
                 let y = start_y + (57.5 * (j + 1) * -1);
                 //add grid
@@ -64,13 +64,17 @@ export class EditAction extends Component {
      * @param y 
      * @param size  根据size来设定格子大小，默认说20*20
      */
-    add_grid(x: number, y: number, size?: Size) {
+    add_grid(x: number, y: number, size?: Size, color?: Color) {
         //实例化 grid
         let grid = instantiate(this.pre_grid);
         grid.setPosition(x, y);
         grid.setParent(this.node);
         if (size) {
             grid.getComponent(UITransform).setContentSize(size);
+        }
+
+        if (color) {
+            grid.getComponent(Sprite).color = color;
         }
     }
 
@@ -152,7 +156,7 @@ export class EditAction extends Component {
                 break;
             case 3:
                 //添加一个grid
-                this.add_grid(local_pos.x, local_pos.y, new Size(10, 10));
+                this.add_grid(local_pos.x, local_pos.y, new Size(15, 15), Color.RED);
                 break;
             case 4:
                 //删除grid
@@ -164,6 +168,7 @@ export class EditAction extends Component {
                         break;
                     }
                 }
+                this.edit_ctl_action.position_data.string = ""
                 break;
         }
     }
@@ -176,6 +181,27 @@ export class EditAction extends Component {
         let y = e.getUILocation().y;
         let local = this.node.getComponent(UITransform).convertToNodeSpaceAR(new Vec3(x, y));
         this.edit_ctl_action.set_pos(Math.floor(local.x), Math.floor(local.y));
+    }
+
+
+    addBlockByCustomPos(x: number, y: number) {
+        for (let i = this.node.children.length - 1; i >= 0; i--) {
+            let grid = this.node.children[i];
+            if (this.cur_grid == grid) {
+                continue;
+            }
+            //根据包围盒子判断是否和local pos有包含关系
+            if (grid.getComponent(UITransform).getBoundingBox().contains(new Vec2(x, y))) {
+                //
+                this.cur_grid = grid;
+                //往layer1中添加一个block，采用世界坐标方式
+                this.layer_1_action.add_block_by_world_position(grid.getWorldPosition());
+                //刷新遮挡关系
+                this.layer_1_action.refresh_shadow();
+                break;
+            }
+        }
+        EventDispatcher.get_target().emit(EventDispatcher.UPDATE_BLOCK_SIZE);
     }
 }
 
