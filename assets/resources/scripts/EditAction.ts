@@ -46,14 +46,24 @@ export class EditAction extends Component {
      */
     private init_grid() {
         this.node.removeAllChildren();
-        let start_x = this.node.getComponent(UITransform).width / 2 * -1 + 15;
+        let start_x = this.node.getComponent(UITransform).width / 2 * -1 - 22;
         let start_y = this.node.getComponent(UITransform).height / 2 - 10;
-        for (let i = 0; i < 10; i++) {
-            let x = start_x + (57.5 * (i + 1));
-            for (let j = 0; j < 11; j++) {
-                let y = start_y + (57.5 * (j + 1) * -1);
+
+        // for (let i = 0; i < 15; i++) {
+        //     let x = start_x + (44 * (i + 1));
+        //     for (let j = 0; j < 15; j++) {
+        //         let y = start_y + (44 * (j + 1) * -1);
+        //         //add grid
+        //         this.add_grid(x, y);
+        //     }
+        // }
+
+        for (let i = 0; i < 29; i++) {
+            let x = start_x + 22 + (22 * (i + 1));
+            for (let j = 0; j < 29; j++) {
+                let y = start_y - 22 + (22 * (j + 1) * -1);
                 //add grid
-                this.add_grid(x, y);
+                this.add_grid(x, y, new Size(10, 10), Color.BLACK);
             }
         }
     }
